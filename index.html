@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>සජීවී සිංහල පුවත් | Sinhala News Live</title>
+  <title>සජීවී සිංහල පුවත් | GNews API</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
@@ -221,12 +221,12 @@
 <div class="hero-gradient">
   <div class="navbar">
     <div class="logo-area">
-      <h1><i class="fas fa-newspaper" style="color:#FFD966;"></i> සජීවී සිංහල නිව්ස්</h1>
-      <p>🇱🇰 ශ්‍රී ලංකාවේ අලුත්ම පුවත් | API සමඟ සජීවීව</p>
+      <h1><i class="fas fa-newspaper" style="color:#FFD966;"></i> සිංහල නිව්ස් හබ්</h1>
+      <p>🇱🇰 GNews API බලයෙන් සජීවී පුවත්</p>
     </div>
     <div class="weather-widget" id="weatherWidget">
       <i class="fas fa-cloud-sun"></i>
-      <span id="weatherText">වායුගෝලය පූරණය වෙමින්...</span>
+      <span id="weatherText">කාලගුණය පූරණය වෙමින්...</span>
     </div>
   </div>
 </div>
@@ -234,7 +234,7 @@
 <main class="container-main">
   <div class="feature-ticker">
     <span class="ticker-label"><i class="fas fa-broadcast-tower"></i> LIVE</span>
-    <span class="ticker-text" id="tickerMessage">🚀 API මගින් සජීවී පුවත් ලබා ගැනීමට සූදානම්...</span>
+    <span class="ticker-text" id="tickerMessage">🚀 GNews API මගින් ශ්‍රී ලංකාවේ නවතම පුවත් ගෙන එයි</span>
   </div>
 
   <div class="section-title" id="newsSectionTitle"><i class="fas fa-fire"></i> අද ප්‍රධාන පුවත් (සජීවී)</div>
@@ -244,8 +244,8 @@
 </main>
 
 <footer>
-  <p><i class="far fa-copyright"></i> 2025 සජීවී සිංහල නිව්ස් | API බලයෙන් සැබෑ පුවත්</p>
-  <p style="margin-top: 10px; font-size: 0.8rem;">📡 API key එක භාවිතයෙන් ලොව පුරා පුවත් ගෙන එයි</p>
+  <p><i class="far fa-copyright"></i> 2025 සිංහල නිව්ස් හබ් | GNews API සමඟ සජීවී පුවත්</p>
+  <p style="margin-top: 10px; font-size: 0.8rem;">📡 දත්ත GNews.io වෙතින් ලබා ගැනේ</p>
 </footer>
 
 <div id="newsModal" class="modal-overlay">
@@ -257,16 +257,18 @@
 </div>
 
 <script>
-  // ======================= API වින්‍යාසය =======================
-  // ඔබගේ API key එක (ඔබ සපයා ඇති key එක)
-  const API_KEY = 'da0c1f36bb1fa76794c1046b6d31b6a3';
+  // ======================= GNews API වින්‍යාසය =======================
+  // ඔබගේ GNews API key එක මෙහි යොදන්න (dashboard එකෙන් ලබාගත් එක)
+  const API_KEY = 'da0c1f36bb1fa76794c1046b6d31b6a3';  // <-- ඔබේ key එක මෙහි දමන්න
   
-  // NewsAPI.org ආකෘතිය (ශ්‍රී ලංකා පුවත් සඳහා country=lk)
-  // ඔබ වෙනත් API එකක් භාවිතා කරන්නේ නම් මෙම URL එක වෙනස් කරන්න.
-  const API_URL = `https://newsapi.org/v2/top-headlines?country=lk&apiKey=${API_KEY}`;
-  
-  // විකල්ප: ඔබට භාෂාව සිංහලට (language=si) හෝ වෙනත් පරාමිති එකතු කළ හැක.
-  // =============================================================
+  // ශ්‍රී ලංකාවට අදාළ පුවත් සඳහා query එකක්
+  // country=lk යන පරාමිතිය GNews API සඳහා සහය නොදක්වයි. එබැවින් "Sri Lanka" හෝ "ලංකා" වැනි search term එකක් භාවිතා කරමු.
+  const QUERY = 'Sri Lanka';  // ඔබට 'ලංකා', 'Colombo' ආදිය යොදාගත හැක
+  const API_URL = `https://gnews.io/api/v4/search?q=${encodeURIComponent(QUERY)}&lang=en&country=lk&max=20&token=${API_KEY}`;
+  // GNews API හි country parameter එක සහය දක්වයි (lk = Sri Lanka)
+  // lang=en නමුත් ශ්‍රී ලංකාවේ පුවත් ඉංග්‍රීසි වුවත් සිංහල පාඨකයින්ට ප්‍රයෝජනවත්.
+  // අවශ්‍ය නම් lang=si දැමිය හැක, නමුත් GNews හි සිංහල ප්‍රතිඵල සීමිතයි.
+  // =================================================================
 
   let liveNewsData = [];
   const newsContainer = document.getElementById('newsGridContainer');
@@ -289,19 +291,19 @@
       
       const data = await response.json();
       
-      if (data.status !== 'ok') {
-        throw new Error('API ප්‍රතිචාරය සාර්ථක නොවීය');
+      if (!data.articles || data.articles.length === 0) {
+        throw new Error('පුවත් කිසිවක් හමු නොවිණි');
       }
       
-      // API දත්ත අපගේ ආකෘතියට හැරවීම
+      // GNews API දත්ත අපගේ ආකෘතියට හැරවීම
       liveNewsData = data.articles.map((article, idx) => ({
         id: idx,
         title: article.title || 'මාතෘකාව නොමැත',
-        desc: article.description || 'විස්තරයක් නොමැත',
-        category: article.source?.name || 'පුවත්',
+        desc: article.description || article.content || 'විස්තරයක් නොමැත',
+        category: article.source?.name || article.source || 'පුවත්',
         fullStory: article.content || article.description || 'සම්පූර්ණ පුවත කියවීමට මූලාශ්‍රය බලන්න.',
         url: article.url,
-        imageUrl: article.urlToImage || `https://picsum.photos/id/${30 + idx}/400/220`,
+        imageUrl: article.image || `https://picsum.photos/id/${30 + idx}/400/220`,
         publishedAt: article.publishedAt
       }));
       
@@ -315,7 +317,7 @@
           <p style="margin-top:1rem;"><strong>API සම්බන්ධතාවය අසාර්ථකයි.</strong><br>
           කරුණාකර API key එක නිවැරදිද, API endpoint එක සක්‍රියද යන්න පරීක්ෂා කරන්න.<br>
           <small>දෝෂය: ${error.message}</small></p>
-          <button onclick="location.reload()" style="margin-top:1rem; padding:0.5rem 1.2rem; background:#1e4a2f; color:white; border:none; border-radius:30px; cursor:pointer;">නැවත උත්සාහ කරන්න</button>
+          <button onclick="fetchLiveNews()" style="margin-top:1rem; padding:0.5rem 1.2rem; background:#1e4a2f; color:white; border:none; border-radius:30px; cursor:pointer;">නැවත උත්සාහ කරන්න</button>
         </div>
       `;
     }
@@ -333,12 +335,12 @@
     let cardsHtml = '';
     liveNewsData.forEach(news => {
       const imgUrl = news.imageUrl || 'https://picsum.photos/id/42/400/220';
-      const timeAgo = news.publishedAt ? new Date(news.publishedAt).toLocaleString() : 'මෑතකදී';
+      const timeAgo = news.publishedAt ? new Date(news.publishedAt).toLocaleString('si-LK') : 'මෑතකදී';
       
       cardsHtml += `
         <div class="news-card" data-news-id="${news.id}">
           <div class="card-img" style="background-image: url('${imgUrl}');">
-            <span class="category-badge">${news.category}</span>
+            <span class="category-badge">${escapeHtml(news.category)}</span>
           </div>
           <div class="card-content">
             <div class="news-title">${escapeHtml(news.title)}</div>
@@ -368,7 +370,7 @@
   function openModal(news) {
     modalTitle.innerText = news.title;
     modalBody.innerHTML = `
-      <p><strong>📌 මූලාශ්‍රය:</strong> ${news.category}</p>
+      <p><strong>📌 මූලාශ්‍රය:</strong> ${escapeHtml(news.category)}</p>
       <p style="line-height:1.6; margin:1rem 0;">${escapeHtml(news.fullStory)}</p>
       <p><i class="fas fa-link"></i> <a href="${news.url}" target="_blank" rel="noopener noreferrer">මුල් පුවත කියවන්න</a></p>
     `;
@@ -394,8 +396,6 @@
       if (m === '<') return '&lt;';
       if (m === '>') return '&gt;';
       return m;
-    }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-      return c;
     });
   }
   
@@ -413,9 +413,9 @@
   updateWeather();
   setInterval(updateWeather, 1800000);
   
-  // Ticker එක සඳහා සජීවී පණිවිඩ (API එකට අනුව වෙනස් කළ හැක)
+  // Ticker එක සඳහා සජීවී පණිවිඩ
   const tickerMessages = [
-    "🚨 API එකෙන් නවතම පුවත් ගලා එයි | අද කොළඹ කොටස් වෙළඳපොල ඉහළට",
+    "🚨 GNews API එකෙන් නවතම පුවත් ගලා එයි | අද කොළඹ කොටස් වෙළඳපොල ඉහළට",
     "⚡ ලෝක බැංකුවෙන් ලංකාවට ඩොලර් මිලියන 350ක ප්‍රතිසංස්කරණ ණය",
     "🏏 ශ්‍රී ලංකා ක්‍රිකට් කණ්ඩායම එන්නත් කාලීන තරඟාවලිය සඳහා සූදානම්",
     "🌾 වී අස්වැද්දුම් ඉහළ යාමත් සමඟ සහල් මිල පහළ බැසීමේ ප්‍රවණතාවක්"
