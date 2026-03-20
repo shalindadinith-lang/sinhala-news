@@ -2,9 +2,9 @@
 <html lang="si">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>සජීවී සිංහල පුවත් | GNews API</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -13,7 +13,6 @@
       background: #f5f7fb;
       color: #1e293b;
       line-height: 1.5;
-      scroll-behavior: smooth;
     }
     .hero-gradient {
       background: linear-gradient(135deg, #0f2b3d 0%, #1b4a2e 100%);
@@ -49,7 +48,6 @@
       align-items: center;
       gap: 1rem;
       font-weight: 500;
-      border: 1px solid rgba(255,255,255,0.25);
     }
     .container-main {
       max-width: 1400px;
@@ -74,7 +72,7 @@
       overflow: hidden;
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.02), 0 2px 6px rgba(0,0,0,0.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
     }
     .news-card:hover {
       transform: translateY(-3px);
@@ -100,7 +98,6 @@
     }
     .card-content {
       padding: 1.3rem 1.5rem 1.8rem;
-      flex: 1;
     }
     .news-title {
       font-size: 1.35rem;
@@ -120,7 +117,6 @@
     .news-meta {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       font-size: 0.75rem;
       color: #5b6e8c;
       border-top: 1px solid #eef2f6;
@@ -133,7 +129,6 @@
       padding: 1.2rem 1.8rem;
       margin: 2rem 0;
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       gap: 1rem;
       border: 1px solid #ffe6b3;
@@ -258,16 +253,16 @@
 
 <script>
   // ======================= GNews API වින්‍යාසය =======================
-  // ඔබගේ GNews API key එක මෙහි යොදන්න (dashboard එකෙන් ලබාගත් එක)
-  const API_KEY = 'da0c1f36bb1fa76794c1046b6d31b6a3';  // <-- ඔබේ key එක මෙහි දමන්න
+  // ඔබගේ GNews API key එක මෙහි යොදන්න
+  const API_KEY = 'da0c1f36bb1fa76794c1046b6d31b6a3';
   
-  // ශ්‍රී ලංකාවට අදාළ පුවත් සඳහා query එකක්
-  // country=lk යන පරාමිතිය GNews API සඳහා සහය නොදක්වයි. එබැවින් "Sri Lanka" හෝ "ලංකා" වැනි search term එකක් භාවිතා කරමු.
-  const QUERY = 'Sri Lanka';  // ඔබට 'ලංකා', 'Colombo' ආදිය යොදාගත හැක
-  const API_URL = `https://gnews.io/api/v4/search?q=${encodeURIComponent(QUERY)}&lang=en&country=lk&max=20&token=${API_KEY}`;
-  // GNews API හි country parameter එක සහය දක්වයි (lk = Sri Lanka)
-  // lang=en නමුත් ශ්‍රී ලංකාවේ පුවත් ඉංග්‍රීසි වුවත් සිංහල පාඨකයින්ට ප්‍රයෝජනවත්.
-  // අවශ්‍ය නම් lang=si දැමිය හැක, නමුත් GNews හි සිංහල ප්‍රතිඵල සීමිතයි.
+  // නිවැරදි GNews API endpoint එක (search endpoint)
+  // "Sri Lanka" සඳහා පුවත් සොයයි. ඔබට "ලංකා" ලෙස වෙනස් කළ හැක.
+  const QUERY = 'Sri Lanka';
+  const API_URL = `https://gnews.io/api/v4/search?q=${encodeURIComponent(QUERY)}&lang=en&max=20&apikey=${API_KEY}`;
+  
+  // Top headlines endpoint එක (country=lk) ද භාවිතා කළ හැක:
+  // const API_URL = `https://gnews.io/api/v4/top-headlines?country=lk&lang=en&max=20&apikey=${API_KEY}`;
   // =================================================================
 
   let liveNewsData = [];
@@ -286,7 +281,13 @@
       const response = await fetch(API_URL);
       
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        let errorMsg = `HTTP ${response.status}: ${response.statusText}`;
+        // API විශේෂ දෝෂ පණිවිඩය ලබා ගැනීමට
+        try {
+          const errData = await response.json();
+          if (errData.errors) errorMsg = errData.errors.join(', ');
+        } catch(e) {}
+        throw new Error(errorMsg);
       }
       
       const data = await response.json();
@@ -300,7 +301,7 @@
         id: idx,
         title: article.title || 'මාතෘකාව නොමැත',
         desc: article.description || article.content || 'විස්තරයක් නොමැත',
-        category: article.source?.name || article.source || 'පුවත්',
+        category: article.source?.name || article.source?.id || 'පුවත්',
         fullStory: article.content || article.description || 'සම්පූර්ණ පුවත කියවීමට මූලාශ්‍රය බලන්න.',
         url: article.url,
         imageUrl: article.image || `https://picsum.photos/id/${30 + idx}/400/220`,
@@ -334,7 +335,7 @@
     
     let cardsHtml = '';
     liveNewsData.forEach(news => {
-      const imgUrl = news.imageUrl || 'https://picsum.photos/id/42/400/220';
+      const imgUrl = news.imageUrl;
       const timeAgo = news.publishedAt ? new Date(news.publishedAt).toLocaleString('si-LK') : 'මෑතකදී';
       
       cardsHtml += `
