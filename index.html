@@ -1,438 +1,203 @@
 <!DOCTYPE html>
 <html lang="si">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>සජීවී සිංහල පුවත් | GNews API</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Inter', 'Noto Sans Sinhala', sans-serif;
-      background: #f5f7fb;
-      color: #1e293b;
-      line-height: 1.5;
-    }
-    .hero-gradient {
-      background: linear-gradient(135deg, #0f2b3d 0%, #1b4a2e 100%);
-      color: white;
-      border-bottom-left-radius: 2rem;
-      border-bottom-right-radius: 2rem;
-    }
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.2rem 2rem;
-      flex-wrap: wrap;
-      gap: 1rem;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-    .logo-area h1 {
-      font-size: 1.9rem;
-      font-weight: 800;
-      background: linear-gradient(120deg, #FFF9C4, #FFE0B5);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .logo-area p { font-size: 0.8rem; opacity: 0.85; }
-    .weather-widget {
-      background: rgba(255,255,255,0.18);
-      backdrop-filter: blur(10px);
-      border-radius: 60px;
-      padding: 0.6rem 1.4rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      font-weight: 500;
-    }
-    .container-main {
-      max-width: 1400px;
-      margin: 2rem auto;
-      padding: 0 1.5rem;
-    }
-    .section-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin: 2rem 0 1rem 0;
-      border-left: 7px solid #1e4a2f;
-      padding-left: 1rem;
-    }
-    .news-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 2rem;
-    }
-    .news-card {
-      background: white;
-      border-radius: 24px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-    }
-    .news-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.12);
-    }
-    .card-img {
-      height: 200px;
-      background-size: cover;
-      background-position: center;
-      position: relative;
-    }
-    .category-badge {
-      position: absolute;
-      top: 14px;
-      left: 14px;
-      background: rgba(0,0,0,0.65);
-      backdrop-filter: blur(4px);
-      padding: 4px 12px;
-      border-radius: 30px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: white;
-    }
-    .card-content {
-      padding: 1.3rem 1.5rem 1.8rem;
-    }
-    .news-title {
-      font-size: 1.35rem;
-      font-weight: 700;
-      margin-bottom: 0.6rem;
-      line-height: 1.35;
-    }
-    .news-desc {
-      color: #334155;
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    .news-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.75rem;
-      color: #5b6e8c;
-      border-top: 1px solid #eef2f6;
-      margin-top: 0.8rem;
-      padding-top: 0.8rem;
-    }
-    .feature-ticker {
-      background: #fff9ef;
-      border-radius: 28px;
-      padding: 1.2rem 1.8rem;
-      margin: 2rem 0;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      border: 1px solid #ffe6b3;
-    }
-    .ticker-label {
-      background: #c2410c;
-      padding: 0.3rem 1rem;
-      border-radius: 40px;
-      color: white;
-      font-weight: 700;
-      font-size: 0.8rem;
-    }
-    .ticker-text {
-      font-weight: 600;
-      font-size: 1rem;
-      flex: 1;
-    }
-    footer {
-      background: #0a1c12;
-      color: #cbd5e1;
-      text-align: center;
-      padding: 2rem;
-      margin-top: 3rem;
-      border-top-left-radius: 2rem;
-      border-top-right-radius: 2rem;
-    }
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.75);
-      backdrop-filter: blur(8px);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      visibility: hidden;
-      opacity: 0;
-      transition: all 0.2s;
-    }
-    .modal-overlay.active {
-      visibility: visible;
-      opacity: 1;
-    }
-    .modal-container {
-      background: white;
-      max-width: 550px;
-      width: 90%;
-      border-radius: 32px;
-      padding: 1.8rem;
-      position: relative;
-      max-height: 85vh;
-      overflow-y: auto;
-    }
-    .modal-close {
-      position: absolute;
-      top: 1rem;
-      right: 1.2rem;
-      background: #f1f5f9;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      width: 36px;
-      height: 36px;
-      border-radius: 30px;
-    }
-    .modal-title {
-      font-size: 1.8rem;
-      font-weight: 800;
-      margin-bottom: 1rem;
-      padding-right: 2rem;
-    }
-    @media (max-width: 680px) {
-      .navbar { flex-direction: column; align-items: start; }
-      .weather-widget { align-self: flex-start; }
-      .section-title { font-size: 1.5rem; }
-      .news-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>සජීවී සිංහල පුවත් | GNews API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', 'Noto Sans Sinhala', sans-serif; background: #f5f7fb; color: #1e293b; line-height: 1.5; }
+        .hero-gradient { background: linear-gradient(135deg, #0f2b3d 0%, #1b4a2e 100%); color: white; border-bottom-left-radius: 2rem; border-bottom-right-radius: 2rem; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 2rem; flex-wrap: wrap; gap: 1rem; max-width: 1400px; margin: 0 auto; }
+        .logo-area h1 { font-size: 1.9rem; font-weight: 800; background: linear-gradient(120deg, #FFF9C4, #FFE0B5); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .logo-area p { font-size: 0.8rem; opacity: 0.85; }
+        .weather-widget { background: rgba(255,255,255,0.18); backdrop-filter: blur(10px); border-radius: 60px; padding: 0.6rem 1.4rem; display: flex; align-items: center; gap: 1rem; font-weight: 500; }
+        .container-main { max-width: 1400px; margin: 2rem auto; padding: 0 1.5rem; }
+        .section-title { font-size: 1.8rem; font-weight: 700; margin: 2rem 0 1rem 0; border-left: 7px solid #1e4a2f; padding-left: 1rem; }
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; }
+        .news-card { background: white; border-radius: 24px; overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+        .news-card:hover { transform: translateY(-3px); box-shadow: 0 20px 35px -12px rgba(0,0,0,0.12); }
+        .card-img { height: 200px; background-size: cover; background-position: center; position: relative; }
+        .category-badge { position: absolute; top: 14px; left: 14px; background: rgba(0,0,0,0.65); backdrop-filter: blur(4px); padding: 4px 12px; border-radius: 30px; font-size: 0.7rem; font-weight: 600; color: white; }
+        .card-content { padding: 1.3rem 1.5rem 1.8rem; }
+        .news-title { font-size: 1.35rem; font-weight: 700; margin-bottom: 0.6rem; line-height: 1.35; }
+        .news-desc { color: #334155; font-size: 0.9rem; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .news-meta { display: flex; justify-content: space-between; font-size: 0.75rem; color: #5b6e8c; border-top: 1px solid #eef2f6; margin-top: 0.8rem; padding-top: 0.8rem; }
+        .feature-ticker { background: #fff9ef; border-radius: 28px; padding: 1.2rem 1.8rem; margin: 2rem 0; display: flex; align-items: center; gap: 1rem; border: 1px solid #ffe6b3; }
+        .ticker-label { background: #c2410c; padding: 0.3rem 1rem; border-radius: 40px; color: white; font-weight: 700; font-size: 0.8rem; }
+        .ticker-text { font-weight: 600; font-size: 1rem; flex: 1; }
+        footer { background: #0a1c12; color: #cbd5e1; text-align: center; padding: 2rem; margin-top: 3rem; border-top-left-radius: 2rem; border-top-right-radius: 2rem; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 1000; display: flex; align-items: center; justify-content: center; visibility: hidden; opacity: 0; transition: all 0.2s; }
+        .modal-overlay.active { visibility: visible; opacity: 1; }
+        .modal-container { background: white; max-width: 550px; width: 90%; border-radius: 32px; padding: 1.8rem; position: relative; max-height: 85vh; overflow-y: auto; }
+        .modal-close { position: absolute; top: 1rem; right: 1.2rem; background: #f1f5f9; border: none; font-size: 1.5rem; cursor: pointer; width: 36px; height: 36px; border-radius: 30px; }
+        .modal-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 1rem; padding-right: 2rem; }
+        @media (max-width: 680px) { .navbar { flex-direction: column; align-items: start; } .weather-widget { align-self: flex-start; } .section-title { font-size: 1.5rem; } .news-grid { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
-
-<div class="hero-gradient">
-  <div class="navbar">
-    <div class="logo-area">
-      <h1><i class="fas fa-newspaper" style="color:#FFD966;"></i> සිංහල නිව්ස් හබ්</h1>
-      <p>🇱🇰 GNews API බලයෙන් සජීවී පුවත්</p>
-    </div>
-    <div class="weather-widget" id="weatherWidget">
-      <i class="fas fa-cloud-sun"></i>
-      <span id="weatherText">කාලගුණය පූරණය වෙමින්...</span>
-    </div>
-  </div>
-</div>
-
-<main class="container-main">
-  <div class="feature-ticker">
-    <span class="ticker-label"><i class="fas fa-broadcast-tower"></i> LIVE</span>
-    <span class="ticker-text" id="tickerMessage">🚀 GNews API මගින් ශ්‍රී ලංකාවේ නවතම පුවත් ගෙන එයි</span>
-  </div>
-
-  <div class="section-title" id="newsSectionTitle"><i class="fas fa-fire"></i> අද ප්‍රධාන පුවත් (සජීවී)</div>
-  <div id="newsGridContainer" class="news-grid">
-    <div style="grid-column:1/-1; text-align:center; padding:3rem;"><i class="fas fa-spinner fa-pulse"></i> පුවත් පූරණය වෙමින්...</div>
-  </div>
-</main>
-
-<footer>
-  <p><i class="far fa-copyright"></i> 2025 සිංහල නිව්ස් හබ් | GNews API සමඟ සජීවී පුවත්</p>
-  <p style="margin-top: 10px; font-size: 0.8rem;">📡 දත්ත GNews.io වෙතින් ලබා ගැනේ</p>
-</footer>
-
-<div id="newsModal" class="modal-overlay">
-  <div class="modal-container">
-    <button class="modal-close" id="closeModalBtn"><i class="fas fa-times"></i></button>
-    <div class="modal-title" id="modalTitle"></div>
-    <div class="modal-full-content" id="modalBody"></div>
-  </div>
-</div>
-
-<script>
-  // ======================= GNews API වින්‍යාසය =======================
-  // ඔබගේ GNews API key එක මෙහි යොදන්න
-  const API_KEY = 'da0c1f36bb1fa76794c1046b6d31b6a3';
-  
-  // නිවැරදි GNews API endpoint එක (search endpoint)
-  // "Sri Lanka" සඳහා පුවත් සොයයි. ඔබට "ලංකා" ලෙස වෙනස් කළ හැක.
-  const QUERY = 'Sri Lanka';
-  const API_URL = `https://gnews.io/api/v4/search?q=${encodeURIComponent(QUERY)}&lang=en&max=20&apikey=${API_KEY}`;
-  
-  // Top headlines endpoint එක (country=lk) ද භාවිතා කළ හැක:
-  // const API_URL = `https://gnews.io/api/v4/top-headlines?country=lk&lang=en&max=20&apikey=${API_KEY}`;
-  // =================================================================
-
-  let liveNewsData = [];
-  const newsContainer = document.getElementById('newsGridContainer');
-  const sectionTitleSpan = document.getElementById('newsSectionTitle');
-  const modalOverlay = document.getElementById('newsModal');
-  const modalTitle = document.getElementById('modalTitle');
-  const modalBody = document.getElementById('modalBody');
-  const closeModalBtn = document.getElementById('closeModalBtn');
-
-  // API එකෙන් දත්ත ලබාගැනීම
-  async function fetchLiveNews() {
-    try {
-      newsContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:3rem;"><i class="fas fa-spinner fa-pulse"></i> පුවත් පූරණය වෙමින්... කරුණාකර රැඳෙන්න.</div>`;
-      
-      const response = await fetch(API_URL);
-      
-      if (!response.ok) {
-        let errorMsg = `HTTP ${response.status}: ${response.statusText}`;
-        // API විශේෂ දෝෂ පණිවිඩය ලබා ගැනීමට
-        try {
-          const errData = await response.json();
-          if (errData.errors) errorMsg = errData.errors.join(', ');
-        } catch(e) {}
-        throw new Error(errorMsg);
-      }
-      
-      const data = await response.json();
-      
-      if (!data.articles || data.articles.length === 0) {
-        throw new Error('පුවත් කිසිවක් හමු නොවිණි');
-      }
-      
-      // GNews API දත්ත අපගේ ආකෘතියට හැරවීම
-      liveNewsData = data.articles.map((article, idx) => ({
-        id: idx,
-        title: article.title || 'මාතෘකාව නොමැත',
-        desc: article.description || article.content || 'විස්තරයක් නොමැත',
-        category: article.source?.name || article.source?.id || 'පුවත්',
-        fullStory: article.content || article.description || 'සම්පූර්ණ පුවත කියවීමට මූලාශ්‍රය බලන්න.',
-        url: article.url,
-        imageUrl: article.image || `https://picsum.photos/id/${30 + idx}/400/220`,
-        publishedAt: article.publishedAt
-      }));
-      
-      renderNews();
-      
-    } catch (error) {
-      console.error('API දෝෂය:', error);
-      newsContainer.innerHTML = `
-        <div style="grid-column:1/-1; text-align:center; padding:2rem; background:#fff0f0; border-radius:28px;">
-          <i class="fas fa-exclamation-triangle" style="font-size:2rem; color:#c2410c;"></i>
-          <p style="margin-top:1rem;"><strong>API සම්බන්ධතාවය අසාර්ථකයි.</strong><br>
-          කරුණාකර API key එක නිවැරදිද, API endpoint එක සක්‍රියද යන්න පරීක්ෂා කරන්න.<br>
-          <small>දෝෂය: ${error.message}</small></p>
-          <button onclick="fetchLiveNews()" style="margin-top:1rem; padding:0.5rem 1.2rem; background:#1e4a2f; color:white; border:none; border-radius:30px; cursor:pointer;">නැවත උත්සාහ කරන්න</button>
-        </div>
-      `;
-    }
-  }
-
-  // පුවත් කාඩ් පෙන්වීම
-  function renderNews() {
-    if (!liveNewsData.length) {
-      newsContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:3rem;">පුවත් කිසිවක් හමු නොවිණි.</div>`;
-      return;
-    }
-    
-    sectionTitleSpan.innerHTML = `<i class="fas fa-newspaper"></i> 📡 සජීවී පුවත් (නවතම ${liveNewsData.length})`;
-    
-    let cardsHtml = '';
-    liveNewsData.forEach(news => {
-      const imgUrl = news.imageUrl;
-      const timeAgo = news.publishedAt ? new Date(news.publishedAt).toLocaleString('si-LK') : 'මෑතකදී';
-      
-      cardsHtml += `
-        <div class="news-card" data-news-id="${news.id}">
-          <div class="card-img" style="background-image: url('${imgUrl}');">
-            <span class="category-badge">${escapeHtml(news.category)}</span>
-          </div>
-          <div class="card-content">
-            <div class="news-title">${escapeHtml(news.title)}</div>
-            <div class="news-desc">${escapeHtml(news.desc)}</div>
-            <div class="news-meta">
-              <span><i class="far fa-clock"></i> ${timeAgo}</span>
-              <span><i class="fas fa-eye"></i> කියවන්න <i class="fas fa-arrow-right"></i></span>
+    <div class="hero-gradient">
+        <div class="navbar">
+            <div class="logo-area">
+                <h1><i class="fas fa-newspaper" style="color:#FFD966;"></i> සිංහල නිව්ස් හබ්</h1>
+                <p>🇱🇰 GNews API බලයෙන් සජීවී පුවත්</p>
             </div>
-          </div>
+            <div class="weather-widget" id="weatherWidget">
+                <i class="fas fa-cloud-sun"></i>
+                <span id="weatherText">කාලගුණය පූරණය වෙමින්...</span>
+            </div>
         </div>
-      `;
-    });
-    
-    newsContainer.innerHTML = cardsHtml;
-    
-    // කාඩ් එක ක්ලික් කළ විට modal එක විවෘත කිරීම
-    document.querySelectorAll('.news-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const id = parseInt(card.getAttribute('data-news-id'));
-        const news = liveNewsData.find(n => n.id === id);
-        if (news) openModal(news);
-      });
-    });
-  }
-  
-  // Modal විවෘත කිරීම
-  function openModal(news) {
-    modalTitle.innerText = news.title;
-    modalBody.innerHTML = `
-      <p><strong>📌 මූලාශ්‍රය:</strong> ${escapeHtml(news.category)}</p>
-      <p style="line-height:1.6; margin:1rem 0;">${escapeHtml(news.fullStory)}</p>
-      <p><i class="fas fa-link"></i> <a href="${news.url}" target="_blank" rel="noopener noreferrer">මුල් පුවත කියවන්න</a></p>
-    `;
-    modalOverlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-  
-  function closeModal() {
-    modalOverlay.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-  
-  closeModalBtn.addEventListener('click', closeModal);
-  modalOverlay.addEventListener('click', (e) => {
-    if (e.target === modalOverlay) closeModal();
-  });
-  
-  // XSS ආරක්ෂාව සඳහා HTML escape
-  function escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/[&<>]/g, function(m) {
-      if (m === '&') return '&amp;';
-      if (m === '<') return '&lt;';
-      if (m === '>') return '&gt;';
-      return m;
-    });
-  }
-  
-  // කාලගුණ විජට් එක (ස්ථිතික)
-  function updateWeather() {
-    const conditions = [
-      "කොළඹ අද අහස පැහැදිලි, 31°C ☀️",
-      "මහනුවරට සැහැල්ලු වැසි, 26°C 🌧️",
-      "ගාල්ල අර්ධ වශයෙන් වළාකුළු, 29°C ⛅",
-      "යාපනය සුළං සහිත, 30°C 💨"
-    ];
-    const rand = Math.floor(Math.random() * conditions.length);
-    document.getElementById('weatherText').innerHTML = conditions[rand];
-  }
-  updateWeather();
-  setInterval(updateWeather, 1800000);
-  
-  // Ticker එක සඳහා සජීවී පණිවිඩ
-  const tickerMessages = [
-    "🚨 GNews API එකෙන් නවතම පුවත් ගලා එයි | අද කොළඹ කොටස් වෙළඳපොල ඉහළට",
-    "⚡ ලෝක බැංකුවෙන් ලංකාවට ඩොලර් මිලියන 350ක ප්‍රතිසංස්කරණ ණය",
-    "🏏 ශ්‍රී ලංකා ක්‍රිකට් කණ්ඩායම එන්නත් කාලීන තරඟාවලිය සඳහා සූදානම්",
-    "🌾 වී අස්වැද්දුම් ඉහළ යාමත් සමඟ සහල් මිල පහළ බැසීමේ ප්‍රවණතාවක්"
-  ];
-  let tickerIdx = 0;
-  function rotateTicker() {
-    const tickerEl = document.getElementById('tickerMessage');
-    if (tickerEl) {
-      tickerIdx = (tickerIdx + 1) % tickerMessages.length;
-      tickerEl.innerHTML = tickerMessages[tickerIdx];
-    }
-  }
-  setInterval(rotateTicker, 8000);
-  
-  // පිටුව පූරණය වූ විගස API ඇමතුම
-  fetchLiveNews();
-</script>
+    </div>
+
+    <main class="container-main">
+        <div class="feature-ticker">
+            <span class="ticker-label"><i class="fas fa-broadcast-tower"></i> LIVE</span>
+            <span class="ticker-text" id="tickerMessage">🚀 GNews API මගින් ශ්‍රී ලංකාවේ නවතම පුවත් ගෙන එයි</span>
+        </div>
+
+        <div class="section-title" id="newsSectionTitle"><i class="fas fa-fire"></i> අද ප්‍රධාන පුවත් (සජීවී)</div>
+        <div id="newsGridContainer" class="news-grid">
+            <div style="grid-column:1/-1; text-align:center; padding:3rem;"><i class="fas fa-spinner fa-pulse"></i> පුවත් පූරණය වෙමින්...</div>
+        </div>
+    </main>
+
+    <footer>
+        <p><i class="far fa-copyright"></i> 2025 සිංහල නිව්ස් හබ් | GNews API සමඟ සජීවී පුවත්</p>
+        <p style="margin-top: 10px; font-size: 0.8rem;">📡 දත්ත GNews.io වෙතින් ලබා ගැනේ</p>
+    </footer>
+
+    <div id="newsModal" class="modal-overlay">
+        <div class="modal-container">
+            <button class="modal-close" id="closeModalBtn"><i class="fas fa-times"></i></button>
+            <div class="modal-title" id="modalTitle"></div>
+            <div class="modal-full-content" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = 'da0c1f36bb1fa76794c1046b6d31b6a3';
+        const QUERY = 'Sri Lanka';
+        const API_URL = `https://gnews.io/api/v4/search?q=${encodeURIComponent(QUERY)}&lang=en&max=20&apikey=${API_KEY}`;
+
+        let liveNewsData = [];
+        const newsContainer = document.getElementById('newsGridContainer');
+        const sectionTitleSpan = document.getElementById('newsSectionTitle');
+        const modalOverlay = document.getElementById('newsModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        async function fetchLiveNews() {
+            try {
+                newsContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:3rem;"><i class="fas fa-spinner fa-pulse"></i> පුවත් පූරණය වෙමින්...</div>`;
+                const response = await fetch(API_URL);
+                if (!response.ok) {
+                    let errorMsg = `HTTP ${response.status}: ${response.statusText}`;
+                    try {
+                        const errData = await response.json();
+                        if (errData.errors) errorMsg = errData.errors.join(', ');
+                    } catch(e) {}
+                    throw new Error(errorMsg);
+                }
+                const data = await response.json();
+                if (!data.articles || data.articles.length === 0) throw new Error('පුවත් කිසිවක් හමු නොවිණි');
+                liveNewsData = data.articles.map((article, idx) => ({
+                    id: idx,
+                    title: article.title || 'මාතෘකාව නොමැත',
+                    desc: article.description || article.content || 'විස්තරයක් නොමැත',
+                    category: article.source?.name || article.source?.id || 'පුවත්',
+                    fullStory: article.content || article.description || 'සම්පූර්ණ පුවත කියවීමට මූලාශ්‍රය බලන්න.',
+                    url: article.url,
+                    imageUrl: article.image || `https://picsum.photos/id/${30 + idx}/400/220`,
+                    publishedAt: article.publishedAt
+                }));
+                renderNews();
+            } catch (error) {
+                newsContainer.innerHTML = `
+                    <div style="grid-column:1/-1; text-align:center; padding:2rem; background:#fff0f0; border-radius:28px;">
+                        <i class="fas fa-exclamation-triangle" style="font-size:2rem; color:#c2410c;"></i>
+                        <p><strong>API සම්බන්ධතාවය අසාර්ථකයි.</strong><br>${error.message}</p>
+                        <button onclick="fetchLiveNews()" style="margin-top:1rem; padding:0.5rem 1.2rem; background:#1e4a2f; color:white; border:none; border-radius:30px; cursor:pointer;">නැවත උත්සාහ කරන්න</button>
+                    </div>`;
+            }
+        }
+
+        function renderNews() {
+            if (!liveNewsData.length) {
+                newsContainer.innerHTML = `<div style="text-align:center; padding:3rem;">පුවත් කිසිවක් හමු නොවිණි.</div>`;
+                return;
+            }
+            sectionTitleSpan.innerHTML = `<i class="fas fa-newspaper"></i> 📡 සජීවී පුවත් (නවතම ${liveNewsData.length})`;
+            let cardsHtml = '';
+            liveNewsData.forEach(news => {
+                const imgUrl = news.imageUrl;
+                const timeAgo = news.publishedAt ? new Date(news.publishedAt).toLocaleString('si-LK') : 'මෑතකදී';
+                cardsHtml += `
+                    <div class="news-card" data-news-id="${news.id}">
+                        <div class="card-img" style="background-image: url('${imgUrl}');">
+                            <span class="category-badge">${escapeHtml(news.category)}</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="news-title">${escapeHtml(news.title)}</div>
+                            <div class="news-desc">${escapeHtml(news.desc)}</div>
+                            <div class="news-meta">
+                                <span><i class="far fa-clock"></i> ${timeAgo}</span>
+                                <span><i class="fas fa-eye"></i> කියවන්න <i class="fas fa-arrow-right"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            newsContainer.innerHTML = cardsHtml;
+            document.querySelectorAll('.news-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const id = parseInt(card.getAttribute('data-news-id'));
+                    const news = liveNewsData.find(n => n.id === id);
+                    if (news) openModal(news);
+                });
+            });
+        }
+        
+        function openModal(news) {
+            modalTitle.innerText = news.title;
+            modalBody.innerHTML = `
+                <p><strong>📌 මූලාශ්‍රය:</strong> ${escapeHtml(news.category)}</p>
+                <p style="line-height:1.6; margin:1rem 0;">${escapeHtml(news.fullStory)}</p>
+                <p><i class="fas fa-link"></i> <a href="${news.url}" target="_blank">මුල් පුවත කියවන්න</a></p>
+            `;
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        closeModalBtn.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
+        
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;');
+        }
+        
+        function updateWeather() {
+            const conditions = ["කොළඹ අද අහස පැහැදිලි, 31°C ☀️","මහනුවරට සැහැල්ලු වැසි, 26°C 🌧️","ගාල්ල අර්ධ වශයෙන් වළාකුළු, 29°C ⛅","යාපනය සුළං සහිත, 30°C 💨"];
+            document.getElementById('weatherText').innerHTML = conditions[Math.floor(Math.random() * conditions.length)];
+        }
+        updateWeather();
+        setInterval(updateWeather, 1800000);
+        
+        const tickerMessages = ["🚨 GNews API එකෙන් නවතම පුවත් ගලා එයි","⚡ ලෝක බැංකුවෙන් ලංකාවට ඩොලර් මිලියන 350ක ණය","🏏 ශ්‍රී ලංකා ක්‍රිකට් කණ්ඩායම තරඟාවලියට සූදානම්","🌾 වී අස්වැද්දුම් ඉහළ යාමෙන් සහල් මිල පහළට"];
+        let tickerIdx = 0;
+        setInterval(() => {
+            const tickerEl = document.getElementById('tickerMessage');
+            if (tickerEl) tickerEl.innerHTML = tickerMessages[tickerIdx++ % tickerMessages.length];
+        }, 8000);
+        
+        fetchLiveNews();
+    </script>
 </body>
 </html>
