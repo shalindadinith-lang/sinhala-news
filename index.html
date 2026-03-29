@@ -2,585 +2,542 @@
 <html lang="si">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sinhala Breaking News</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>ශ්‍රී ලංකා බ්‍රේකින් නිවුස් | වාතාවරණ සහ ස්ථාන විස්තර</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
-body{
-margin:0;
-font-family:'Noto Sans Sinhala', sans-serif;
-background:#f2f2f2;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-header{
-background:#c40000;
-color:white;
-padding:15px;
-text-align:center;
-font-size:28px;
-font-weight:700;
+body {
+    font-family: 'Noto Sans Sinhala', sans-serif;
+    background: #f4f6f9;
 }
 
-.breaking{
-background:black;
-color:white;
-padding:10px;
-overflow:hidden;
-white-space:nowrap;
-}
-
-.breaking span{
-color:red;
-font-weight:bold;
-margin-right:15px;
-}
-
-/* Special notice */
-.special-notice {
-    background: #fff3cd;
-    border-left: 5px solid #ffc107;
-    padding: 12px 20px;
-    margin: 10px auto;
-    max-width: 1200px;
-    border-radius: 8px;
-    font-size: 14px;
-    color: #856404;
-    line-height: 1.5;
-}
-.special-notice i {
-    margin-right: 8px;
-    color: #e67e22;
-}
-
-/* Weather widget + buttons */
-.weather-widget {
-    background: rgba(255,255,255,0.2);
-    padding: 5px 15px;
-    border-radius: 40px;
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 14px;
-    backdrop-filter: blur(4px);
-}
-.weather-buttons {
-    display: inline-flex;
-    gap: 8px;
-    margin-left: 10px;
-}
-.weather-buttons button {
-    background: rgba(255,255,255,0.25);
-    border: none;
+/* Header & Top Bar */
+.top-header {
+    background: #b11d1d;
     color: white;
-    padding: 5px 12px;
-    border-radius: 30px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background 0.2s;
-    font-family: inherit;
+    padding: 12px 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-.weather-buttons button:hover {
-    background: rgba(255,255,255,0.4);
-}
-.header-content {
+
+.header-flex {
+    max-width: 1280px;
+    margin: 0 auto;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
     gap: 15px;
 }
-.left-title {
+
+.logo-area h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 1px;
     display: flex;
     align-items: center;
     gap: 10px;
-    flex-wrap: wrap;
 }
-.right-group {
+
+.logo-area h1 i {
+    font-size: 1.8rem;
+}
+
+/* Action Buttons Group */
+.action-buttons {
     display: flex;
+    gap: 16px;
     align-items: center;
-    gap: 12px;
     flex-wrap: wrap;
 }
 
-.slider{
-width:100%;
-height:400px;
-position:relative;
-overflow:hidden;
+.btn-weather, .btn-location {
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(4px);
+    border: none;
+    padding: 10px 22px;
+    border-radius: 40px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: inherit;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    text-decoration: none;
 }
 
-.slide{
-position:absolute;
-width:100%;
-height:100%;
-display:none;
+.btn-weather i, .btn-location i {
+    font-size: 1rem;
 }
 
-.slide img{
-width:100%;
-height:100%;
-object-fit:cover;
+.btn-weather:hover, .btn-location:hover {
+    background: #ffffff;
+    color: #b11d1d;
+    transform: translateY(-2px);
 }
 
-.slide-title{
-position:absolute;
-bottom:0;
-background:rgba(0,0,0,0.6);
-color:white;
-width:100%;
-padding:20px;
-font-size:22px;
+.weather-mini-card {
+    background: rgba(0,0,0,0.3);
+    border-radius: 48px;
+    padding: 6px 18px;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    backdrop-filter: blur(4px);
 }
 
-.news-container{
-max-width:1200px;
-margin:auto;
-padding:20px;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:20px;
+.weather-mini-card i {
+    font-size: 1rem;
 }
 
-.news-card{
-background:white;
-border-radius:10px;
-overflow:hidden;
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
-cursor:pointer;
-transition:transform 0.2s;
+/* Breaking */
+.breaking-bar {
+    background: #1e1e1e;
+    color: #ffd966;
+    padding: 10px 16px;
+    overflow: hidden;
+    white-space: nowrap;
+    font-weight: 500;
+    border-bottom: 2px solid #b11d1d;
 }
 
-.news-card:hover{
-transform:translateY(-3px);
+.breaking-bar span {
+    color: #ff5e5e;
+    font-weight: bold;
+    margin-right: 20px;
 }
 
-.news-card img{
-width:100%;
-height:200px;
-object-fit:cover;
+/* Special notice */
+.special-alert {
+    background: #fff8e7;
+    border-left: 6px solid #ff9800;
+    margin: 18px auto;
+    max-width: 1280px;
+    border-radius: 14px;
+    padding: 14px 24px;
+    font-size: 0.9rem;
+    color: #5e3a00;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
-.news-content{
-padding:15px;
+.special-alert i {
+    font-size: 1.8rem;
+    color: #e67e22;
 }
 
-.news-content h3{
-font-size:18px;
-margin:0 0 8px 0;
+/* Slider */
+.slider-container {
+    width: 100%;
+    height: 420px;
+    position: relative;
+    overflow: hidden;
+    margin-top: 0;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-.date {
-    font-size: 12px;
-    color: #777;
+.slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.slide-caption {
+    position: absolute;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: white;
+    width: 100%;
+    padding: 25px 20px;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+/* News grid */
+.news-grid {
+    max-width: 1280px;
+    margin: 40px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 28px;
+}
+
+.news-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.25s;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+    cursor: pointer;
+}
+
+.news-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 28px rgba(0,0,0,0.12);
+}
+
+.news-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.news-content {
+    padding: 18px;
+}
+
+.news-content h3 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    color: #1f2a3e;
+}
+
+.news-date {
+    font-size: 0.7rem;
+    color: #7f8c8d;
     display: flex;
     align-items: center;
     gap: 5px;
-    margin-top: 5px;
+    margin-top: 12px;
 }
 
-.date i {
-    font-size: 12px;
+footer {
+    background: #0f172a;
+    color: #cbd5e1;
+    text-align: center;
+    padding: 24px;
+    font-size: 0.85rem;
 }
 
-footer{
-background:#111;
-color:white;
-text-align:center;
-padding:15px;
-}
-
-/* MODAL for news */
-.modal {
+/* MODAL styles */
+.modal-main {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 1100;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.7);
-    backdrop-filter: blur(4px);
+    background-color: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+    justify-content: center;
+    align-items: center;
 }
 
-.modal-content {
-    background-color: #fff;
-    margin: 10% auto;
-    padding: 25px;
-    border-radius: 15px;
+.modal-card {
+    background: white;
+    border-radius: 28px;
     width: 90%;
-    max-width: 600px;
-    max-height: 80vh;
+    max-width: 550px;
+    max-height: 85vh;
     overflow-y: auto;
+    padding: 28px 26px;
     position: relative;
+    animation: fadeInUp 0.2s ease;
 }
 
-.modal-content h2 {
-    margin-top: 0;
-    font-size: 24px;
-    color: #c40000;
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-card h2 {
+    color: #b11d1d;
+    margin-bottom: 16px;
+    font-size: 1.8rem;
     padding-right: 30px;
 }
 
-.modal-content p {
+.modal-card p {
     line-height: 1.6;
-    font-size: 16px;
-    color: #333;
+    color: #2d3e50;
+    margin-bottom: 20px;
 }
 
-.modal-content a {
-    display: inline-block;
-    background: #c40000;
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 30px;
-    margin-top: 15px;
-    font-weight: bold;
-}
-
-.modal-content a:hover {
-    background: #a00000;
-}
-
-.close {
+.close-modal {
     position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 28px;
+    top: 18px;
+    right: 22px;
+    font-size: 32px;
     font-weight: bold;
     cursor: pointer;
     color: #888;
+    transition: 0.2s;
 }
 
-.close:hover {
-    color: #c40000;
+.close-modal:hover {
+    color: #b11d1d;
 }
 
-/* Location details modal (separate) */
-.location-modal {
-    display: none;
-    position: fixed;
-    z-index: 1001;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.7);
-    backdrop-filter: blur(4px);
-}
-.location-modal .modal-content {
-    max-width: 500px;
-}
-.location-modal h3 {
-    margin: 0 0 15px 0;
-    color: #c40000;
-}
-.detail-row {
-    margin: 12px 0;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-.detail-row i {
-    width: 28px;
-    color: #c40000;
+.read-more-link {
+    display: inline-block;
+    background: #b11d1d;
+    color: white;
+    padding: 10px 24px;
+    border-radius: 40px;
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: 15px;
 }
 
-@media (max-width: 768px) {
-    .header-content {
+.read-more-link:hover {
+    background: #8e1515;
+}
+
+@media (max-width: 680px) {
+    .header-flex {
         flex-direction: column;
-        align-items: stretch;
         text-align: center;
     }
-    .right-group {
+    .action-buttons {
         justify-content: center;
     }
-    .special-notice {
-        margin: 10px 15px;
+    .special-alert {
+        margin: 15px;
+    }
+    .slider-container {
+        height: 280px;
     }
 }
 </style>
 </head>
 <body>
 
-<header>
-    <div class="header-content">
-        <div class="left-title">
-            <span>📰 Sinhala Breaking News</span>
+<header class="top-header">
+    <div class="header-flex">
+        <div class="logo-area">
+            <h1><i class="fas fa-newspaper"></i> Sinhala Breaking News</h1>
         </div>
-        <div class="right-group">
-            <div class="weather-widget" id="weatherWidget">
-                <i class="fas fa-cloud-sun"></i> <span id="weatherText">Loading weather...</span>
-            </div>
-            <div class="weather-buttons">
-                <button id="refreshWeatherBtn"><i class="fas fa-sync-alt"></i> Weather</button>
-                <button id="locationDetailsBtn"><i class="fas fa-map-marker-alt"></i> Location Details</button>
+        <div class="action-buttons">
+            <!-- Two buttons: Weather opens LARA-Cosmetics, Location opens lanka-news -->
+            <a href="https://shalindadinith-lang.github.io/LARA-Cosmetics-1/" target="_blank" class="btn-weather" id="mainWeatherBtn">
+                <i class="fas fa-cloud-sun-rain"></i> කාලගුණය බලන්න
+            </a>
+            <a href="https://shalindadinith-lang.github.io/lanka-news/" target="_blank" class="btn-location" id="mainLocationBtn">
+                <i class="fas fa-map-marked-alt"></i> ස්ථාන විස්තර
+            </a>
+            <div class="weather-mini-card" id="weatherMiniWidget">
+                <i class="fas fa-cloud-moon"></i> <span id="miniWeatherText">කොළඹ 29°C ☀️</span>
             </div>
         </div>
     </div>
 </header>
 
-<div class="breaking">
-    <span>Breaking News :</span>
-    <marquee id="breakingNews"></marquee>
+<div class="breaking-bar">
+    <span><i class="fas fa-broadcast-tower"></i> BREAKING :</span>
+    <marquee id="breakingTicker" behavior="scroll" scrollamount="4"></marquee>
 </div>
 
-<!-- Special Notice -->
-<div class="special-notice">
-    <i class="fas fa-truck"></i> <strong>විශේෂ නිවේදනය:</strong> 
-    බහාලුම් ප්‍රවාහන රථ සඳහා අවශ්‍ය ඉන්ධන ලබා ගැනීමට එම රථවල QR කේතය සහිතව සියලු දත්ත අමාත්‍යාංශයට ලබා දෙන ලෙස නියෝග කෙරේ. මේ අතර බහාලුම් ප්‍රවාහන රථ නිමිකරුවන්ගේ සංගමයේ සභාපති සමන් මංජුල පැවසුවේ ඒ අනුව මේ වන විට කන්ටේනර් රථ 1325ක තොරතුරු අමාත්‍යාංශයට ලබා දුන් බවයි. ඉදිරි සතිය තුළ බහාලුම් රථ සඳහා අවශ්‍ය ඉන්ධන ලබා දීමට අමාත්‍යවරයා එකඟ වූ බවද ඔහු පැවසීය.
+<div class="special-alert">
+    <i class="fas fa-truck-fast"></i>
+    <span><strong>විශේෂ නිවේදනය:</strong> බහාලුම් ප්‍රවාහන රථ සඳහා අවශ්‍ය ඉන්ධන ලබා ගැනීමට QR කේතය සහිතව දත්ත අමාත්‍යාංශයට ලබා දෙන ලෙස නියෝග. කන්ටේනර් රථ 1325ක තොරතුරු භාරදී ඇති අතර ඉදිරි සතිය තුළ ඉන්ධන ලබාදීමට එකඟතාව.</span>
 </div>
 
-<div class="slider" id="slider"></div>
+<div class="slider-container" id="heroSlider"></div>
 
-<div class="news-container" id="news"></div>
+<div class="news-grid" id="newsContainer"></div>
 
 <footer>
-© 2026 Sinhala News Network
+    © 2026 Sinhala News Network | සත්‍ය වේගවත් පුවත්
 </footer>
 
-<!-- MODAL for news -->
-<div id="modal" class="modal">
-    <div class="modal-content">
-        <span class="close" id="closeModalBtn">&times;</span>
-        <h2 id="modalTitle"></h2>
-        <p id="modalDescription"></p>
-        <a id="modalLink" href="#" target="_blank">👉 සම්පූර්ණ පුවත කියවන්න</a>
-    </div>
-</div>
-
-<!-- Location Details Modal -->
-<div id="locationModal" class="location-modal">
-    <div class="modal-content">
-        <span class="close" id="closeLocationModalBtn">&times;</span>
-        <h3><i class="fas fa-map-marked-alt"></i> ස්ථාන විස්තර</h3>
-        <div id="locationDetailsContent">
-            <div class="detail-row"><i class="fas fa-city"></i> <strong>නගරය:</strong> කොළඹ</div>
-            <div class="detail-row"><i class="fas fa-globe-asia"></i> <strong>රට:</strong> ශ්‍රී ලංකාව</div>
-            <div class="detail-row"><i class="fas fa-map-pin"></i> <strong>අක්ෂාංශ/දේශාංශ:</strong> 6.9271° N, 79.8612° E</div>
-            <div class="detail-row"><i class="fas fa-temperature-high"></i> <strong>උෂ්ණත්වය:</strong> -- °C</div>
-            <div class="detail-row"><i class="fas fa-tint"></i> <strong>ආර්ද්‍රතාව:</strong> --%</div>
-            <div class="detail-row"><i class="fas fa-wind"></i> <strong>සුළං වේගය:</strong> -- km/h</div>
-            <div class="detail-row"><i class="fas fa-cloud-rain"></i> <strong>තත්වය:</strong> --</div>
-        </div>
+<!-- Global Modal for News Details -->
+<div id="globalModal" class="modal-main">
+    <div class="modal-card">
+        <span class="close-modal" id="closeNewsModalBtn">&times;</span>
+        <h2 id="modalNewsTitle"></h2>
+        <p id="modalNewsDesc"></p>
+        <a id="modalNewsLink" href="#" target="_blank" class="read-more-link"><i class="fas fa-external-link-alt"></i> සම්පූර්ණ පුවත කියවන්න</a>
     </div>
 </div>
 
 <script>
-// ================= WEATHER (OpenWeatherMap) =================
-const WEATHER_API_KEY = 'a711d55b1e89708be65819eb07c0eeba';
-const CITY = 'Colombo';
-const UNITS = 'metric';
+// ====================== SIMPLE WEATHER WIDGET (just display, no modal) ======================
+const API_KEY = 'a711d55b1e89708be65819eb07c0eeba';
+let currentWeatherData = null;
 
-let lastWeatherData = null;  // store latest weather data for location details
-
-async function fetchWeather() {
+async function fetchWeatherForWidget() {
     try {
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${CITY}&units=${UNITS}&appid=${WEATHER_API_KEY}`;
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Weather API error');
-        const data = await response.json();
-        lastWeatherData = data;
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=Colombo&units=metric&appid=${API_KEY}`;
+        const resp = await fetch(url);
+        if (!resp.ok) throw new Error();
+        const data = await resp.json();
+        currentWeatherData = data;
         const temp = Math.round(data.main.temp);
         const desc = data.weather[0].description;
         const icon = getWeatherIcon(data.weather[0].main);
-        document.getElementById('weatherText').innerHTML = `${CITY} ${temp}°C ${icon} ${desc}`;
-        return data;
-    } catch (error) {
-        console.error('Weather fetch failed:', error);
-        document.getElementById('weatherText').innerHTML = `කොළඹ 28°C ☀️`;
-        // fallback data
-        lastWeatherData = {
-            main: { temp: 28, humidity: 70 },
-            wind: { speed: 12 },
-            weather: [{ description: "පැහැදිලි අහස", main: "Clear" }],
-            name: "Colombo",
-            sys: { country: "LK" },
-            coord: { lat: 6.9271, lon: 79.8612 }
-        };
-        return null;
+        document.getElementById('miniWeatherText').innerHTML = `${data.name} ${temp}°C ${icon} ${desc.substring(0,18)}`;
+    } catch (err) {
+        document.getElementById('miniWeatherText').innerHTML = `කොළඹ 29°C ☀️ වැසි රහිත`;
     }
 }
 
-function getWeatherIcon(condition) {
-    if (condition.includes('Clear')) return '☀️';
-    if (condition.includes('Cloud')) return '☁️';
-    if (condition.includes('Rain')) return '🌧️';
-    if (condition.includes('Thunder')) return '⛈️';
+function getWeatherIcon(conditionMain) {
+    const cond = conditionMain.toLowerCase();
+    if (cond.includes('clear')) return '☀️';
+    if (cond.includes('cloud')) return '☁️';
+    if (cond.includes('rain')) return '🌧️';
+    if (cond.includes('thunder')) return '⛈️';
     return '🌤️';
 }
 
-// Refresh weather manually
-document.getElementById('refreshWeatherBtn').addEventListener('click', () => {
-    fetchWeather();
-});
+// ====================== RSS NEWS FETCHER ======================
+let allArticles = [];
 
-// Location details: show modal with current weather details
-function showLocationDetails() {
-    const modal = document.getElementById('locationModal');
-    if (!lastWeatherData) {
-        // if no data yet, try fetch first
-        fetchWeather().then(() => updateLocationModal());
-    } else {
-        updateLocationModal();
+const rssProxyUrl = "https://api.rss2json.com/v1/api.json?rss_url=https://www.lankacnews.com/feeds/posts/default?alt=rss";
+
+async function loadNews() {
+    try {
+        const response = await fetch(rssProxyUrl);
+        const data = await response.json();
+        allArticles = data.items || [];
+        renderNewsAndSlider(allArticles);
+        renderBreakingTicker(allArticles);
+    } catch (err) {
+        console.error("RSS error", err);
+        document.getElementById('newsContainer').innerHTML = `<div style="grid-column:1/-1; text-align:center;">පුවත් ලබාගැනීම අසාර්ථකයි. නැවත උත්සාහ කරන්න.</div>`;
     }
-    modal.style.display = 'block';
 }
 
-function updateLocationModal() {
-    if (!lastWeatherData) return;
-    const temp = Math.round(lastWeatherData.main.temp);
-    const humidity = lastWeatherData.main.humidity;
-    const wind = Math.round(lastWeatherData.wind.speed);
-    const desc = lastWeatherData.weather[0].description;
-    const city = lastWeatherData.name || "කොළඹ";
-    const country = lastWeatherData.sys?.country || "LK";
-    const lat = lastWeatherData.coord?.lat || 6.9271;
-    const lon = lastWeatherData.coord?.lon || 79.8612;
-    
-    document.getElementById('locationDetailsContent').innerHTML = `
-        <div class="detail-row"><i class="fas fa-city"></i> <strong>නගරය:</strong> ${city}</div>
-        <div class="detail-row"><i class="fas fa-globe-asia"></i> <strong>රට:</strong> ශ්‍රී ලංකාව (${country})</div>
-        <div class="detail-row"><i class="fas fa-map-pin"></i> <strong>අක්ෂාංශ/දේශාංශ:</strong> ${lat}° N, ${lon}° E</div>
-        <div class="detail-row"><i class="fas fa-temperature-high"></i> <strong>උෂ්ණත්වය:</strong> ${temp}°C</div>
-        <div class="detail-row"><i class="fas fa-tint"></i> <strong>ආර්ද්‍රතාව:</strong> ${humidity}%</div>
-        <div class="detail-row"><i class="fas fa-wind"></i> <strong>සුළං වේගය:</strong> ${wind} km/h</div>
-        <div class="detail-row"><i class="fas fa-cloud-rain"></i> <strong>තත්වය:</strong> ${desc}</div>
-    `;
-}
+function renderNewsAndSlider(articles) {
+    let newsHtml = '';
+    let slidesHtml = '';
+    let tickerText = '';
 
-document.getElementById('locationDetailsBtn').addEventListener('click', showLocationDetails);
-
-// Close location modal
-document.getElementById('closeLocationModalBtn').addEventListener('click', () => {
-    document.getElementById('locationModal').style.display = 'none';
-});
-window.addEventListener('click', (event) => {
-    const modal = document.getElementById('locationModal');
-    if (event.target === modal) modal.style.display = 'none';
-});
-
-// ================= RSS FEED =================
-let allNewsItems = [];
-
-const rssFeed = "https://api.rss2json.com/v1/api.json?rss_url=https://www.lankacnews.com/feeds/posts/default?alt=rss";
-
-fetch(rssFeed)
-.then(response => response.json())
-.then(data => {
-    let newsHTML = "";
-    let sliderHTML = "";
-    let breaking = "";
-
-    allNewsItems = data.items;
-
-    data.items.forEach((item, index) => {
-        let img = item.thumbnail;
-        if (!img) {
-            img = "https://via.placeholder.com/800x400";
+    articles.forEach((item, idx) => {
+        let thumbnail = item.thumbnail;
+        if (!thumbnail || thumbnail === '') {
+            thumbnail = 'https://via.placeholder.com/600x400?text=Sinhala+News';
         }
-
-        let formattedDate = "මෑතකදී";
+        let imgUrl = thumbnail.replace('s72', 's800');
+        let title = item.title || 'පුවතක්';
+        let formattedDate = "මෑතක";
         if (item.pubDate) {
             try {
-                const date = new Date(item.pubDate);
-                formattedDate = date.toLocaleDateString('si-LK', { 
-                    year: 'numeric', 
-                    month: 'short', 
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-            } catch(e) {
-                formattedDate = "මෑතකදී";
-            }
+                const d = new Date(item.pubDate);
+                formattedDate = d.toLocaleDateString('si-LK', { year:'numeric', month:'short', day:'numeric' });
+            } catch(e){}
         }
-
-        if (index < 5) {
-            sliderHTML += `
+        if (idx < 5) {
+            slidesHtml += `
                 <div class="slide">
-                    <img src="${img.replace("s72","s1200")}">
-                    <div class="slide-title">${item.title}</div>
+                    <img src="${imgUrl}" alt="news slide" loading="lazy">
+                    <div class="slide-caption">${escapeHtml(title)}</div>
                 </div>
             `;
         }
-
-        breaking += item.title + " 🔴 ";
-
-        newsHTML += `
-            <div class="news-card" data-index="${index}">
-                <img src="${img.replace("s72","s600")}">
+        tickerText += title + "   •   ";
+        newsHtml += `
+            <div class="news-card" data-news-index="${idx}">
+                <img src="${imgUrl}" alt="news image" loading="lazy">
                 <div class="news-content">
-                    <h3>${item.title}</h3>
-                    <div class="date">
-                        <i class="fas fa-calendar-alt"></i> ${formattedDate}
-                    </div>
+                    <h3>${escapeHtml(title)}</h3>
+                    <div class="news-date"><i class="far fa-calendar-alt"></i> ${formattedDate}</div>
                 </div>
             </div>
         `;
     });
-
-    document.getElementById("news").innerHTML = newsHTML;
-    document.getElementById("slider").innerHTML = sliderHTML;
-    document.getElementById("breakingNews").innerHTML = breaking;
-
+    document.getElementById('newsContainer').innerHTML = newsHtml;
+    document.getElementById('heroSlider').innerHTML = slidesHtml;
+    document.getElementById('breakingTicker').innerHTML = tickerText;
     startSlider();
+    attachNewsCardEvents(articles);
+}
 
-    document.querySelectorAll('.news-card').forEach(card => {
-        card.addEventListener('click', function(e) {
-            const index = parseInt(this.getAttribute('data-index'));
-            const newsItem = allNewsItems[index];
-            if (newsItem) {
-                openModal(newsItem);
-            }
-        });
+function escapeHtml(str) {
+    if(!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+        if(m === '&') return '&amp;';
+        if(m === '<') return '&lt;';
+        if(m === '>') return '&gt;';
+        return m;
     });
-});
+}
 
 function startSlider() {
     let slides = document.querySelectorAll(".slide");
-    if (slides.length === 0) return;
-    let index = 0;
+    if(slides.length === 0) return;
+    let activeIndex = 0;
     slides[0].style.display = "block";
     setInterval(() => {
-        slides[index].style.display = "none";
-        index = (index + 1) % slides.length;
-        slides[index].style.display = "block";
-    }, 4000);
+        slides[activeIndex].style.display = "none";
+        activeIndex = (activeIndex + 1) % slides.length;
+        slides[activeIndex].style.display = "block";
+    }, 4500);
 }
 
-function stripHtml(html) {
-    if (!html) return '';
-    const div = document.createElement('div');
-    div.innerHTML = html;
-    return div.textContent || div.innerText || '';
+function attachNewsCardEvents(articles) {
+    document.querySelectorAll('.news-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            const idx = parseInt(this.getAttribute('data-news-index'));
+            if (articles && articles[idx]) {
+                openNewsModal(articles[idx]);
+            }
+        });
+    });
 }
 
-function openModal(item) {
-    document.getElementById('modalTitle').innerText = item.title;
-    const description = stripHtml(item.description);
-    document.getElementById('modalDescription').innerText = description || 'විස්තරයක් නොමැත.';
-    document.getElementById('modalLink').href = item.link;
-    document.getElementById('modal').style.display = 'block';
+function openNewsModal(article) {
+    const modal = document.getElementById('globalModal');
+    document.getElementById('modalNewsTitle').innerText = article.title || 'සුපිරි පුවත';
+    let description = article.description || '';
+    const plainDesc = description.replace(/<[^>]*>/g, '');
+    document.getElementById('modalNewsDesc').innerText = plainDesc.length > 300 ? plainDesc.substring(0,300)+'...' : plainDesc;
+    document.getElementById('modalNewsLink').href = article.link || '#';
+    modal.style.display = 'flex';
 }
 
-function closeModal() {
-    document.getElementById('modal').style.display = 'none';
+function renderBreakingTicker(articles) {
+    let tickerString = '';
+    articles.slice(0,12).forEach(art => { tickerString += art.title + "   🔴   "; });
+    document.getElementById('breakingTicker').innerHTML = tickerString;
 }
 
-document.getElementById('closeModalBtn').addEventListener('click', closeModal);
-window.addEventListener('click', function(event) {
-    const modal = document.getElementById('modal');
-    if (event.target === modal) closeModal();
+// Close modal
+function closeGlobalModal() {
+    document.getElementById('globalModal').style.display = 'none';
+}
+document.getElementById('closeNewsModalBtn').addEventListener('click', closeGlobalModal);
+window.addEventListener('click', (e) => {
+    const globalModal = document.getElementById('globalModal');
+    if (e.target === globalModal) globalModal.style.display = 'none';
 });
 
-// Initial weather load
-fetchWeather();
-setInterval(fetchWeather, 30 * 60 * 1000);
+// Initialize weather widget and news
+fetchWeatherForWidget();
+loadNews();
+// Refresh weather every 30 minutes
+setInterval(fetchWeatherForWidget, 30 * 60 * 1000);
 </script>
 </body>
 </html>
